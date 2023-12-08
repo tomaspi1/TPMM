@@ -1,68 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="styly.css">
-	<title>Formulář pro FAPI</title>
+  <title>Převod měn</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/money.js/0.2.2/money.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="money.js"></script>
+
 </head>
 <body>
-	
+  <input type="number" id="amount" placeholder="Zadejte částku">
+  <select id="from">
+      <option value="CZK">CZK</option>
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <!-- Další možnosti měn -->
+  </select>
+  <select id="to">
+      <option value="CZK">CZK</option>
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <!-- Další možnosti měn -->
+  </select>
+  <button id="convert">Převést</button>
+  <p id="result"></p>
 
-<form >
-<label for="jmeno">Jméno:</label>
-<input type="text" name="jmeno" id="jmeno" 
-placeholder="Vaše jméno" >
-<br>
+  <script>
+      // Nastavení výchozích hodnot pro převod měn
+      fx.settings = { from: "CZK" };
 
-<label for="vek"> Věk:</label>
-<input type ="number" name="vek" id="vek"
-placeholder="Váš věk">
-<br>
+      // Načtení dat o směnných kurzech
+      $.getJSON('https://data.kurzy.cz/json/meny/b[6]cb[vypsat].js', function(data) {
+          if (typeof fx !== "undefined" && fx.rates) {
+              fx.rates = data;
+          } else {
+              var fxSetup = {
+                rates: data
+              }
+          }
+      });
 
-<label for="email" >E-mail</label>
-<input type="email" name="email" id="email"
-placeholder ="Váš email" value="@">
-<br>
-
-<label for="heslo">Heslo</label>
-<input type="password" name="heslo" id="heslo" placeholder="Vaš heslo">
-<br> 
-
-
-Edice:
-<label for="edice">speciální</label>
-<input type="radio" name="fakturace" id="edice">
-<label for="zakladni">základní</label>
-<input type="radio" name="fakturace" id="specialni">
-<br>
-
-<label for="pohlavi">Pohlaví</label>
-<select name="pohlavi">
-	<option>vyberte</option>
-	<option>Muž</option>
-	<option>Žena</option>
-</select>
-<br>
-
-
-<label for="poznamka">Poznámka</label>
-<textarea name="poznamka" id="poznamka" placeholder="Něco nám napište" ></textarea>
-<br>
-
-<label for="podmínky">Souhlasím s podmínkami </label>
-<input type="checkbox" name="souhlas" id="podminky" checked>
-<br>
-
-<button>Zaregistrovat <img src="img/next.png" height="24" ></button>
-
-</form>
-
-<video src="video/pozadi.mp4" autoplay muted></video>
-
+      // Převod měn
+      $('#convert').click(function() {
+          var amount = $('#amount').val();
+          var from = $('#from').val();
+          var to = $('#to').val();
+          var result = fx.convert(amount, {from: from, to: to});
+          $('#result').text(result);
+      });
+  </script>
 </body>
-
-
-
 </html>
