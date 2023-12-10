@@ -123,11 +123,11 @@ function cenaProduktu($cena)
    ?>
 
    <!-- Formulář pro zadání základních údajů -->
-   <form action="process_form.php" method="post">
+   <form action="" method="post">
       <label for="name">Jméno:</label><br>
       <input type="text" id="name" name="name"><br>
-      <label for="age">Věk:</label><br>
-      <input type="number" id="age" name="age"><br>
+      <label for="age">Příjmení:</label><br>
+      <input type="number" id="surname" name="surname"><br>
       <label for="email">Email:</label><br>
       <input type="email" id="email" name="email"><br>
       <input type="submit" value="Odeslat">
